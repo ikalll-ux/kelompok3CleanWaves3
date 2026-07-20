@@ -1,0 +1,22 @@
+/* CleanWaves Custom Stylesheet — INTI (dipakai oleh shell index.html) */
+/* Rule di file ini dipakai lintas-section (bukan milik 1 halaman saja), */
+/* jadi tetap dimuat langsung oleh index.html, bukan lewat partials/. */
+
+/* Page View Management Toggle — dipakai navigateTo()/showSection() di index.js
+   untuk semua section, apa pun partial-nya */
+.page-section {
+    display: none;
+}
+.page-section.active {
+    display: block;
+}
+
+/* Animation Utilities — dipakai ke section mana pun yang baru ditampilkan */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}

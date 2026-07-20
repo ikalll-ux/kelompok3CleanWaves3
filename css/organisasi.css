@@ -1,0 +1,11 @@
+/* ==========================================================================
+   organisasi.css — halaman Struktur Manajemen
+   ========================================================================== */
+
+#organisasi .bg-white {
+    transition: transform 0.15s ease;
+}
+
+#organisasi .bg-white:hover {
+    transform: translateY(-2px);
+}

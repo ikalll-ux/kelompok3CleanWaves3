@@ -1,0 +1,161 @@
+/* ==========================================================================
+   CleanWaves — common.css
+   Style dasar yang dipakai SEMUA halaman: body, navbar, tombol Order Now,
+   footer, dan animasi fade-in saat halaman dibuka.
+   (Sebagian besar tampilan konten tiap section masih memakai utility class
+   Tailwind langsung di HTML — file ini hanya mengisi bagian yang dulu tidak
+   punya definisi CSS sama sekali, yaitu navbar/footer & elemen custom.)
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+.page-body {
+    margin: 0;
+    background-color: #f8fafc; /* slate-50 */
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b; /* slate-800 */
+    -webkit-font-smoothing: antialiased;
+    padding-top: 5rem; /* ruang untuk navbar fixed */
+}
+
+/* --- Animasi fade-in saat halaman dimuat --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.page-main {
+    min-height: 60vh;
+}
+
+/* --- Navbar --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e0f2fe; /* sky-100 */
+}
+
+.navbar-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0369a1; /* sky-700 */
+    letter-spacing: 0.02em;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #475569; /* slate-600 */
+    overflow-x: auto;
+    max-width: 600px;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+}
+
+@media (min-width: 1024px) {
+    .nav-links {
+        display: flex;
+    }
+}
+
+.nav-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.nav-link:hover {
+    color: #0284c7; /* sky-600 */
+}
+
+.nav-link.active-link {
+    color: #0284c7; /* sky-600 */
+    font-weight: 700;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-order {
+    background-color: #0284c7; /* sky-600 */
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 10px -2px rgba(2, 132, 199, 0.35);
+    transition: background-color 0.15s ease;
+}
+
+.btn-order:hover {
+    background-color: #0369a1; /* sky-700 */
+}
+
+/* --- Footer --- */
+.site-footer {
+    background-color: #fff;
+    border-top: 1px solid #f1f5f9; /* slate-100 */
+    padding: 3rem 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #94a3b8; /* slate-400 */
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    color: #64748b; /* slate-500 */
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.footer-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.footer-link:hover {
+    color: #0284c7; /* sky-600 */
+}

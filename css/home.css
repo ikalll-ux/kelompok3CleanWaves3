@@ -1,0 +1,12 @@
+/* ==========================================================================
+   home.css — khusus halaman Home (index.html)
+   Mengatur transisi hero slider yang dikendalikan oleh js/home.js.
+   ========================================================================== */
+
+.hero-slide {
+    opacity: 0;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}

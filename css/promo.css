@@ -1,0 +1,11 @@
+/* ==========================================================================
+   promo.css — halaman Promo
+   ========================================================================== */
+
+#promo .rounded-2xl {
+    transition: transform 0.15s ease;
+}
+
+#promo .rounded-2xl:hover {
+    transform: translateY(-2px);
+}

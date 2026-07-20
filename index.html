@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanWaves Laundry - Premium Service Portal</title>
+    <!-- TailwindCSS CDN (dipertahankan untuk utility class di dalam konten) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="page-body animate-fade-in">
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-left">
+                <a href="index.html" class="brand">CleanWaves.</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link active-link">Home</a>
+                    <a href="layanan.html" class="nav-link">Layanan</a>
+                    <a href="harga.html" class="nav-link">Harga</a>
+                    <a href="tracking.html" class="nav-link">Lacak</a>
+                    <a href="membership.html" class="nav-link">Membership</a>
+                    <a href="promo.html" class="nav-link">Promo</a>
+                    <a href="karir.html" class="nav-link">Karir</a>
+                    <a href="faq.html" class="nav-link">FAQ</a>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <a href="order.html" class="btn-order">Order Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-main">
+        <div id="home">
+        <section class="py-12 px-6 max-w-7xl mx-auto min-h-[85vh] flex flex-col justify-center">
+        <!-- Hero Slider / Layout Multi-Hero -->
+        <div class="w-full relative bg-slate-100 rounded-3xl overflow-hidden shadow-lg border border-slate-200 mb-12">
+        <!-- Slides Container -->
+        <div class="relative h-[450px] w-full" id="heroSlider">
+        <!-- Hero 1 -->
+        <div class="hero-slide active absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-100 flex items-center">
+        <div class="absolute inset-0 bg-linear-to-r from-sky-900/90 via-sky-800/70 to-transparent z-10"></div>
+        <!-- TEMPLATE HERO IMAGE 1 -->
+        <img alt="Silakan ganti dengan gambar Anda (hero1.jpg)" class="absolute inset-0 w-full h-full object-cover" src="asset/gantungan baju.png"/>
+        <div class="relative z-20 max-w-xl px-8 md:px-16 text-white space-y-4">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest bg-sky-500 text-white px-3 py-1 rounded-md">Premium Care</span>
+        <h2 class="text-3xl md:text-5xl font-light tracking-tight leading-tight">Pakaian bersih maksimal, <br/><span class="font-medium text-sky-300">tanpa menguras waktu Anda.</span></h2>
+        <p class="text-sky-100/80 text-sm">Kami merawat setiap helai pakaian Anda dengan teknologi modern dan detergen ramah lingkungan. Tinggal klik, kami jemput dan antar kembali.</p>
+        </div>
+        </div>
+        <!-- Hero 2 -->
+        <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-0 flex items-center">
+        <div class="absolute inset-0 bg-linear-to-r from-teal-900/90 via-teal-800/70 to-transparent z-10"></div>
+        <!-- TEMPLATE HERO IMAGE 2 -->
+        <img alt="Silakan ganti dengan gambar Anda (hero2.jpg)" class="absolute inset-0 w-full h-full object-cover" src="asset/higenis.png"/>
+        <div class="relative z-20 max-w-xl px-8 md:px-16 text-white space-y-4">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest bg-teal-500 text-white px-3 py-1 rounded-md">Fast &amp; Express</span>
+        <h2 class="text-3xl md:text-5xl font-light tracking-tight leading-tight">Butuh Cepat? <br/><span class="font-medium text-teal-300">Layanan Kilat 6 Jam Selesai!</span></h2>
+        <p class="text-teal-100/80 text-sm">Jalur khusus cuci express untuk kebutuhan mendesak Anda. Dijamin bersih, rapi, dan langsung wangi siap pakai.</p>
+        </div>
+        </div>
+        <!-- Hero 3 -->
+        <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-0 flex items-center">
+        <div class="absolute inset-0 bg-linear-to-r from-indigo-900/90 via-indigo-800/70 to-transparent z-10"></div>
+        <!-- TEMPLATE HERO IMAGE 3 -->
+        <img alt="Silakan ganti dengan gambar Anda (hero3.jpg)" class="absolute inset-0 w-full h-full object-cover" src="asset/1 mesin cuci.png"/>
+        <div class="relative z-20 max-w-xl px-8 md:px-16 text-white space-y-4">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest bg-indigo-500 text-white px-3 py-1 rounded-md">Hygienic Process</span>
+        <h2 class="text-3xl md:text-5xl font-light tracking-tight leading-tight">1 Mesin 1 Pelanggan <br/><span class="font-medium text-indigo-300">Higienitas Penuh Terjamin.</span></h2>
+        <p class="text-indigo-100/80 text-sm">Kami berkomitmen menjaga pakaian Anda agar tidak tertukar atau dicampur dengan pakaian orang lain. Keamanan &amp; kebersihan teratas.</p>
+        </div>
+        </div>
+        </div>
+        <!-- Slider Controls Arrows -->
+        <button class="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-xs text-white p-2 rounded-full transition-all cursor-pointer" onclick="prevHero()">
+                            ❮
+                        </button>
+        <button class="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-xs text-white p-2 rounded-full transition-all cursor-pointer" onclick="nextHero()">
+                            ❯
+                        </button>
+        <!-- Slider Indicators Dots -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
+        <span class="hero-dot w-2.5 h-2.5 rounded-full bg-white opacity-100 cursor-pointer transition-all" onclick="setHero(0)"></span>
+        <span class="hero-dot w-2.5 h-2.5 rounded-full bg-white opacity-40 cursor-pointer transition-all" onclick="setHero(1)"></span>
+        <span class="hero-dot w-2.5 h-2.5 rounded-full bg-white opacity-40 cursor-pointer transition-all" onclick="setHero(2)"></span>
+        </div>
+        </div>
+        <!-- Quick Access Menu Buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto w-full">
+        <a class="border border-sky-200 bg-white hover:bg-sky-50 p-4 rounded-2xl text-center transition-all text-xs font-medium shadow-xs cursor-pointer" href="layanan.html">📋 Semua Layanan</a>
+        <a class="border border-sky-200 bg-white hover:bg-sky-50 p-4 rounded-2xl text-center transition-all text-xs font-medium shadow-xs cursor-pointer" href="harga.html">💰 Daftar Harga</a>
+        <a class="border border-sky-200 bg-white hover:bg-sky-50 p-4 rounded-2xl text-center transition-all text-xs font-medium shadow-xs cursor-pointer" href="tracking.html">📦 Lacak Laundry</a>
+        <a class="border border-sky-200 bg-sky-600 hover:bg-sky-700 text-white p-4 rounded-2xl text-center transition-all text-xs font-semibold shadow-xs flex items-center justify-center" href="order.html">🛒 Pesan Sekarang</a>
+        </div>
+        </section>
+        <section class="py-16 bg-sky-50/50 border-t border-sky-100 text-center px-6">
+        <h2 class="text-2xl font-light text-slate-900">Tentang <span class="font-medium text-sky-600">CleanWaves</span></h2>
+        <p class="text-slate-600 max-w-2xl mx-auto mt-4 text-sm">Lahir dari keinginan memberikan kemudahan di tengah kesibukan modern, kami membawa standar baru perawatan pakaian dengan memadukan teknologi canggih dan ketepatan waktu.</p>
+        </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="layanan.html" class="footer-link">Layanan</a>
+            <a href="harga.html" class="footer-link">Harga</a>
+            <a href="blog.html" class="footer-link">Edukasi Blog</a>
+            <a href="organisasi.html" class="footer-link">Manajemen</a>
+            <a href="kontak.html" class="footer-link">Kontak</a>
+            <a href="lokasi.html" class="footer-link">Lokasi Hub</a>
+            <a href="syarat-ketentuan.html" class="footer-link">Syarat Ketentuan</a>
+            <a href="kebijakan-privasi.html" class="footer-link">Kebijakan Privasi</a>
+            <a href="kemitraan.html" class="footer-link">Franchise Mitra</a>
+            <a href="testimoni.html" class="footer-link">Ulasan Pelanggan</a>
+        </div>
+        <p>&copy; 2026 CleanWaves Laundry. All rights reserved. &middot; <a href="admin.html" class="footer-link">Login Staf/Admin</a></p>
+    </footer>
+
+    <script src="js/home.js"></script>
+</body>
+</html>

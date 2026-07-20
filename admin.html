@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanWaves - Admin Panel Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased">
+
+    <!-- Admin Header -->
+    <header class="bg-slate-900 text-white p-6 shadow-md flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-wide text-sky-400">CleanWaves Admin</h1>
+            <p class="text-xs text-slate-400">Sistem Pencatatan Finansial & Manajemen Antrean</p>
+        </div>
+        <a href="index.html" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg border border-slate-700">← Lihat Landing Page</a>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- KOLOM LEFT: REGISTRASI & FITUR PENCARIAN MEMBER -->
+        <div class="space-y-6">
+            <!-- 1. Form Registrasi Member Baru -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-4">📋 Pendaftaran Member Baru</h3>
+                <form id="regMemberForm" onsubmit="registerMember(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Nama Lengkap Member</label>
+                        <input type="text" id="regNama" required placeholder="Masukkan nama" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Nomor Kartu Member</label>
+                        <input type="text" id="regKartu" required placeholder="Contoh: MEM-882" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                    </div>
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs py-2.5 rounded-xl font-medium">Daftarkan Keanggotaan</button>
+                </form>
+            </div>
+
+            <!-- 2. Pencarian Member & Rekomendasi Inisial Nama -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-2">🔍 Cari & Cek Kuota Member</h3>
+                <p class="text-[11px] text-slate-400 mb-3">Ketik inisial nama atau nomor kartu untuk memunculkan rekomendasi nama otomatis.</p>
+                
+                <input type="text" id="searchMemberInput" oninput="searchMember()" placeholder="Ketik nama / nomor kartu..." class="w-full px-3 py-2 border rounded-xl text-sm mb-2 focus:outline-none">
+                
+                <!-- Hasil Sugesti nama rekomendasi -->
+                <div id="memberSuggestions" class="bg-slate-50 border rounded-xl divide-y max-h-40 overflow-y-auto hidden"></div>
+            </div>
+        </div>
+
+        <!-- KOLOM CENTER: INPUT TRANSAKSI BARU & OPERATOR -->
+        <div class="space-y-6">
+            <!-- Permintaan Penjemputan Online (dari order.html) -->
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-2">📥 Permintaan Penjemputan Online</h3>
+                <p class="text-[11px] text-slate-400 mb-3">Pengajuan dari pelanggan lewat halaman Order. Belum ditimbang — proses lalu input di form transaksi setelah kurir menimbang di lokasi/outlet.</p>
+                <div id="pickupRequestList" class="space-y-2"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-4">🛒 Input Transaksi & Berat Cucian</h3>
+                
+                <form id="transaksiForm" onsubmit="processTransaction(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Nama Pelanggan / Member Pilihan</label>
+                        <input type="text" id="selectedCustomer" readonly placeholder="Pilih dari pencarian member atau ketik manual" class="w-full px-3 py-2 bg-slate-50 border rounded-xl text-sm font-semibold text-sky-700">
+                        <input type="hidden" id="selectedCustomerId">
+                        <input type="hidden" id="originalRequestId">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium mb-1" id="weightLabel">Berat Asli (kg)</label>
+                            <input type="number" step="0.1" id="weightInput" oninput="calculateDiscountLogic()" required placeholder="0.0" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium mb-1" id="payWeightLabel">Berat Dibayar (kg)</label>
+                            <input type="number" step="0.1" id="payWeightInput" readonly class="w-full px-3 py-2 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-sm font-bold">
+                        </div>
+                    </div>
+
+                    <div id="discountAlert" class="hidden text-[11px] bg-emerald-50 text-emerald-700 p-2 rounded-lg font-medium">
+                        🎉 Member berhak potongan 2 kg karena kelipatan riwayat cuci ke-5!
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Jenis Layanan</label>
+                        <select id="serviceSelect" onchange="calculateDiscountLogic()" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none">
+                            <!-- Diisi otomatis oleh admin.js dari data master Layanan & Harga -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium mb-1">Pilih Operator Lapangan</label>
+                        <select id="operatorSelect" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none">
+                            <option value="Haikal|Operator 1">Haikal (Operator 1)</option>
+                            <option value="Medina|Operator 2">Medina (Operator 2)</option>
+                            <option value="sari|Operator 3">Sari (Operator 3)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white text-xs py-2.5 rounded-xl font-bold uppercase tracking-wider">Cetak Struk & Rilis Antrean</button>
+                </form>
+            </div>
+
+            <!-- Modul Pencatatan Finansial Harian -->
+            <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-md">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">💰 Total Pemasukan Harian</h3>
+                <div class="text-3xl font-bold text-emerald-400" id="incomeDisplay">Rp 0</div>
+                <p class="text-[10px] text-slate-500 mt-2">Dihitung otomatis berdasarkan akumulasi berat bayar transaksi sukses hari ini.</p>
+            </div>
+        </div>
+
+        <!-- KOLOM RIGHT: MONITORING ANTREAN LAUNDRY & UPDATE STATUS -->
+        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-4">⏳ Antrean Proses & Status Monitor</h3>
+            <p class="text-[11px] text-slate-400 mb-3">Menampilkan detail nama **Operator Asli** khusus konsumsi admin.</p>
+            
+            <div id="adminQueueList" class="space-y-3 divide-y divide-slate-100">
+                <!-- Komponen antrean dimasukkan lewat JavaScript -->
+            </div>
+        </div>
+
+        <!-- MANAJEMEN DATA MASTER (full width) -->
+        <div class="lg:col-span-3 bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-600 mb-1">🗂️ Manajemen Data Master</h3>
+            <p class="text-[11px] text-slate-400 mb-4">Catatan: form Membership &amp; Lokasi Outlet di bawah ini disiapkan sebagai representasi struktur data — belum terhubung mengubah tampilan pelanggan secara real-time. Form Layanan &amp; Harga sudah tersambung langsung ke tabel harga di landing page dan pilihan layanan pada form transaksi/order.</p>
+
+            <!-- Tab Navigasi -->
+            <div class="flex gap-2 mb-5">
+                <button type="button" onclick="switchAdminTab('tab-layanan')" id="btn-tab-layanan" class="admin-tab-btn active">Layanan &amp; Harga</button>
+                <button type="button" onclick="switchAdminTab('tab-membership')" id="btn-tab-membership" class="admin-tab-btn">Membership</button>
+                <button type="button" onclick="switchAdminTab('tab-lokasi')" id="btn-tab-lokasi" class="admin-tab-btn">Lokasi Outlet</button>
+            </div>
+
+            <!-- TAB: LAYANAN & HARGA -->
+            <div id="tab-layanan" class="admin-tab-panel">
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 uppercase">
+                            <tr>
+                                <th class="p-2.5">Nama Layanan</th>
+                                <th class="p-2.5">Satuan</th>
+                                <th class="p-2.5">Harga</th>
+                                <th class="p-2.5">Estimasi Waktu</th>
+                                <th class="p-2.5"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+                <form id="serviceForm" onsubmit="addService(event)" class="grid grid-cols-2 sm:grid-cols-5 gap-2 items-end">
+                    <div class="sm:col-span-2">
+                        <label class="block text-[10px] font-medium mb-1">Nama Layanan</label>
+                        <input type="text" id="svcName" required placeholder="Contoh: Cuci Selimut" class="w-full px-3 py-2 border rounded-xl text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium mb-1">Satuan</label>
+                        <select id="svcUnit" class="w-full px-3 py-2 border rounded-xl text-xs">
+                            <option value="kg">kg</option>
+                            <option value="pcs">pcs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium mb-1">Harga (Rp)</label>
+                        <input type="number" id="svcPrice" required placeholder="10000" class="w-full px-3 py-2 border rounded-xl text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium mb-1">Estimasi</label>
+                        <input type="text" id="svcEta" required placeholder="2 Hari" class="w-full px-3 py-2 border rounded-xl text-xs">
+                    </div>
+                    <div class="col-span-2 sm:col-span-5">
+                        <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs py-2 rounded-xl font-medium">+ Tambah Layanan</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB: MEMBERSHIP (representasi struktur, belum real-time) -->
+            <div id="tab-membership" class="admin-tab-panel hidden">
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 uppercase">
+                            <tr>
+                                <th class="p-2.5">Paket</th>
+                                <th class="p-2.5">Harga / Bulan</th>
+                                <th class="p-2.5">Kuota Kiloan</th>
+                                <th class="p-2.5">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr><td class="p-2.5 font-medium">Silver Wave</td><td class="p-2.5">Rp 150.000</td><td class="p-2.5">20 kg</td><td class="p-2.5">Gratis jemput radius 3km</td></tr>
+                            <tr><td class="p-2.5 font-medium">Gold Wave</td><td class="p-2.5">Rp 280.000</td><td class="p-2.5">40 kg</td><td class="p-2.5">Gratis antar-jemput tanpa batas jarak dekat</td></tr>
+                            <tr><td class="p-2.5 font-medium">Royal Wave</td><td class="p-2.5">Rp 500.000</td><td class="p-2.5">60 kg</td><td class="p-2.5">+5 pcs cuci satuan, prioritas kilat</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Struktur form siap — penyimpanan paket membership akan disambungkan ke database saat sistem live.');" class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+                    <div><label class="block text-[10px] font-medium mb-1">Nama Paket</label><input type="text" placeholder="Contoh: Platinum Wave" class="w-full px-3 py-2 border rounded-xl text-xs"></div>
+                    <div><label class="block text-[10px] font-medium mb-1">Harga/Bulan</label><input type="number" placeholder="750000" class="w-full px-3 py-2 border rounded-xl text-xs"></div>
+                    <div><label class="block text-[10px] font-medium mb-1">Kuota (kg)</label><input type="number" placeholder="80" class="w-full px-3 py-2 border rounded-xl text-xs"></div>
+                    <div><button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs py-2 rounded-xl font-medium">+ Tambah Paket</button></div>
+                </form>
+            </div>
+
+            <!-- TAB: LOKASI OUTLET (representasi struktur, belum real-time) -->
+            <div id="tab-lokasi" class="admin-tab-panel hidden">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl text-xs">
+                        <div>
+                            <p class="font-semibold text-slate-700">CleanWaves Hub - Kebon Jeruk</p>
+                            <p class="text-slate-400">Jl. Raya Panjang No.45, Jakarta Barat (08:00 - 21:00)</p>
+                        </div>
+                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded">Buka</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl text-xs">
+                        <div>
+                            <p class="font-semibold text-slate-700">CleanWaves Hub - Sudirman Suite</p>
+                            <p class="text-slate-400">Gedung Annex Lantai Dasar, Jakarta Pusat (07:00 - 22:00)</p>
+                        </div>
+                        <span class="text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded">Buka</span>
+                    </div>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Struktur form siap — penyimpanan outlet baru akan disambungkan ke database saat sistem live.');" class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-end">
+                    <div class="sm:col-span-2"><label class="block text-[10px] font-medium mb-1">Nama & Alamat Outlet</label><input type="text" placeholder="Contoh: CleanWaves Hub - Kelapa Gading" class="w-full px-3 py-2 border rounded-xl text-xs"></div>
+                    <div><button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs py-2 rounded-xl font-medium">+ Tambah Outlet</button></div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

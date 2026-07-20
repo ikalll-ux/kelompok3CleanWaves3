@@ -1,0 +1,21 @@
+/* ==========================================================================
+   tracking.css — halaman Lacak Laundry (tracking.html)
+   Mengatur tampilan titik & teks pada timeline progres yang di-toggle
+   oleh js/tracking.js lewat class "step-active".
+   ========================================================================== */
+
+.dot-indicator {
+    transition: background-color 0.2s ease;
+}
+
+.step-active .dot-indicator {
+    background-color: #0284c7; /* sky-600 */
+}
+
+.step-active .title-step {
+    color: #0f172a; /* slate-900 */
+}
+
+.step-active .desc-step {
+    color: #475569; /* slate-600 */
+}

@@ -1,0 +1,9 @@
+/* ==========================================================================
+   blog.css — halaman daftar Blog Edukasi
+   ========================================================================== */
+
+#blog a.bg-white {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

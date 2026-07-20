@@ -1,0 +1,18 @@
+/* ==========================================================================
+   order.css — halaman Ajukan Penjemputan (order.html)
+   ========================================================================== */
+
+#orderForm input:focus,
+#orderForm select:focus,
+#orderForm textarea:focus {
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+#receiptNotifModal {
+    animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

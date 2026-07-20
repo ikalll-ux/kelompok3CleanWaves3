@@ -1,0 +1,11 @@
+/* ==========================================================================
+   kemitraan.css — halaman Kemitraan / Franchise
+   ========================================================================== */
+
+#kemitraan button {
+    transition: transform 0.15s ease;
+}
+
+#kemitraan button:hover {
+    transform: translateY(-1px);
+}

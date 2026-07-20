@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lacak Laundry - CleanWaves Laundry</title>
+    <!-- TailwindCSS CDN (dipertahankan untuk utility class di dalam konten) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/tracking.css">
+</head>
+<body class="page-body animate-fade-in">
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-left">
+                <a href="index.html" class="brand">CleanWaves.</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="layanan.html" class="nav-link">Layanan</a>
+                    <a href="harga.html" class="nav-link">Harga</a>
+                    <a href="tracking.html" class="nav-link active-link">Lacak</a>
+                    <a href="membership.html" class="nav-link">Membership</a>
+                    <a href="promo.html" class="nav-link">Promo</a>
+                    <a href="karir.html" class="nav-link">Karir</a>
+                    <a href="faq.html" class="nav-link">FAQ</a>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <a href="order.html" class="btn-order">Order Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-main">
+        <div class="py-16 px-6 max-w-xl mx-auto" id="tracking">
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm text-center">
+        <span class="text-3xl">📦</span>
+        <h2 class="text-xl font-medium text-slate-900 mt-3 mb-2">Lacak Status Laundry</h2>
+        <p class="text-xs text-slate-500 mb-6">Tidak perlu login. Masukkan nomor struk/tanda terima yang diberikan petugas outlet setelah pakaian Anda ditimbang.</p>
+        <div class="flex flex-col sm:flex-row gap-2 mb-6">
+        <input class="w-full text-center px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500 uppercase" id="trackInput" placeholder="Contoh: NOTA-1025" type="text"/>
+        <button class="bg-sky-600 hover:bg-sky-700 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all cursor-pointer whitespace-nowrap" onclick="checkOrderStatus()">Periksa Status</button>
+        </div>
+        <!-- HASIL LACAK / TRACKING TIMELINE DISPLAY -->
+        <div class="text-left border-t border-slate-100 pt-6 mt-4 hidden" id="trackingResultBox">
+        <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 mb-6">
+        <div class="grid grid-cols-2 gap-2 text-xs">
+        <div><span class="text-slate-400">ID Pesanan:</span> <span class="font-bold text-slate-800" id="resOrderId"></span></div>
+        <div><span class="text-slate-400">Pelanggan:</span> <span class="font-bold text-slate-800" id="resOrderNama"></span></div>
+        <div class="col-span-2"><span class="text-slate-400">Paket:</span> <span class="font-medium text-sky-700" id="resOrderPaket"></span></div>
+        </div>
+        </div>
+        <p class="text-xs font-semibold text-slate-700 uppercase mb-4">Progres Pengerjaan Pakaian:</p>
+        <!-- Timeline Component Interaktif -->
+        <div class="relative pl-6 space-y-6 border-l border-slate-200 ml-3">
+        <!-- Step 1: Masuk Antrian -->
+        <div class="relative" id="step-antrian">
+        <div class="dot-indicator absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-white bg-slate-300"></div>
+        <h4 class="text-xs font-bold text-slate-700 title-step">Masuk Dalam Antrian</h4>
+        <p class="text-[11px] text-slate-400 desc-step" id="desc-antrian">Pesanan telah diterima outlet dan menunggu giliran proses pencucian.</p>
+        </div>
+        <!-- Step 2: Proses Pencucian -->
+        <div class="relative" id="step-cuci">
+        <div class="dot-indicator absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-white bg-slate-300"></div>
+        <h4 class="text-xs font-bold text-slate-400 title-step">Proses Pencucian</h4>
+        <p class="text-[11px] text-slate-400 desc-step" id="desc-cuci">Pakaian sedang dipilah berdasarkan jenis kain/warna dan masuk tahap pencucian higienis.</p>
+        </div>
+        <!-- Step 3: Proses Setrika Uap -->
+        <div class="relative" id="step-setrika">
+        <div class="dot-indicator absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-white bg-slate-300"></div>
+        <h4 class="text-xs font-bold text-slate-400 title-step">Proses Setrika Uap</h4>
+        <p class="text-[11px] text-slate-400 desc-step" id="desc-setrika">Tahap pelembutan kain menggunakan sistem uap anti gosong dan sterilisasi anti bakteri.</p>
+        </div>
+        <!-- Step 4: Siap diantar / diambil -->
+        <div class="relative" id="step-siap">
+        <div class="dot-indicator absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-white bg-slate-300"></div>
+        <h4 class="text-xs font-bold text-slate-400 title-step">Siap Diantar / Diambil</h4>
+        <p class="text-[11px] text-slate-400 desc-step" id="desc-siap">Pakaian sudah di-packing dengan rapi dalam plastik tersegel wangi dan siap dikirim balik.</p>
+        </div>
+        </div>
+        </div>
+        <!-- DEFAULT VIEW INFO TAHAPAN -->
+        <div class="mt-8 text-left border-t border-slate-100 pt-4 text-slate-500" id="defaultTrackInfo">
+        <p class="text-xs font-semibold text-slate-700 uppercase">Daftar Status Regulasi Kami:</p>
+        <div class="mt-2 space-y-2 text-xs">
+        <div>⚪ Masuk Dalam Antrian</div>
+        <div>⚪ Proses Pencucian</div>
+        <div>⚪ Proses Setrika Uap</div>
+        <div>⚪ Siap Diantar / Diambil</div>
+        </div>
+        <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 text-[11px]">
+                            💡 <span class="text-slate-600">Belum punya nomor struk? Ajukan penjemputan lewat <a class="text-sky-600 font-medium hover:underline" href="order.html">Order Sekarang</a>, lalu tunggu petugas outlet menimbang &amp; menerbitkan nomor struk untuk pelacakan.</span>
+        </div>
+        </div>
+        </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="layanan.html" class="footer-link">Layanan</a>
+            <a href="harga.html" class="footer-link">Harga</a>
+            <a href="blog.html" class="footer-link">Edukasi Blog</a>
+            <a href="organisasi.html" class="footer-link">Manajemen</a>
+            <a href="kontak.html" class="footer-link">Kontak</a>
+            <a href="lokasi.html" class="footer-link">Lokasi Hub</a>
+            <a href="syarat-ketentuan.html" class="footer-link">Syarat Ketentuan</a>
+            <a href="kebijakan-privasi.html" class="footer-link">Kebijakan Privasi</a>
+            <a href="kemitraan.html" class="footer-link">Franchise Mitra</a>
+            <a href="testimoni.html" class="footer-link">Ulasan Pelanggan</a>
+        </div>
+        <p>&copy; 2026 CleanWaves Laundry. All rights reserved. &middot; <a href="admin.html" class="footer-link">Login Staf/Admin</a></p>
+    </footer>
+
+    <script src="js/tracking.js"></script>
+</body>
+</html>

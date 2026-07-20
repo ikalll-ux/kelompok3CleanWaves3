@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Laundry - CleanWaves</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- jsPDF: dipakai untuk membuat file struk PDF langsung di browser (client-side, tanpa backend) -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/order.css">
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen">
+
+    <!-- Header Sederhana. Order tidak memerlukan login. -->
+    <header class="p-6 max-w-3xl mx-auto flex items-center justify-between">
+        <a href="index.html" class="text-xl font-bold text-sky-700 tracking-wide">CleanWaves.</a>
+    </header>
+
+    <main class="px-6 pb-16 max-w-2xl mx-auto">
+
+        <!-- FORM PENGAJUAN ORDER -->
+        <div id="orderFormWrap" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Ajukan Penjemputan Laundry</h2>
+            <p class="text-xs text-slate-500 mb-6">Isi detail penjemputan di bawah ini. Tidak perlu login — nomor struk untuk pelacakan akan langsung terbit begitu pengajuan dikirim. Berat & biaya final tetap mengikuti hasil timbangan resmi kurir/outlet.</p>
+
+            <form id="orderForm" onsubmit="submitLaundryOrder(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
+                        <input type="text" id="orderNama" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor WhatsApp</label>
+                        <input type="tel" id="orderWA" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Jenis Layanan</label>
+                    <select id="orderLayanan" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                        <!-- Diisi otomatis oleh order.js dari data layanan yang sama dipakai admin -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Estimasi Berat / Jumlah Item</label>
+                    <input type="text" id="orderJumlah" required placeholder="Contoh: 5 kg atau 3 pcs kemeja" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500">
+                    <p class="text-[10px] text-slate-400 mt-1">Hanya estimasi. Berat & biaya final mengikuti hasil timbangan resmi di outlet.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Alamat Lengkap Penjemputan</label>
+                    <textarea id="orderAlamat" required rows="3" placeholder="Tuliskan alamat detail & patokan lokasi rumah..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500"></textarea>
+                </div>
+
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <p class="text-xs text-sky-700 font-medium">Info Tambahan:</p>
+                    <p class="text-[11px] text-sky-600 mt-0.5">Setelah pengajuan dikirim, Anda langsung mendapat nomor struk yang bisa dipakai melacak status di halaman utama (tanpa login). Struk juga bisa diunduh sebagai PDF. Kurir kami akan menuju lokasi Anda untuk penimbangan resmi.</p>
+                </div>
+
+                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm py-3 rounded-xl transition-all shadow-md cursor-pointer">Kirim Pengajuan Penjemputan</button>
+            </form>
+        </div>
+
+        <!-- TAMPILAN SETELAH BERHASIL DIAJUKAN -->
+        <div id="orderSuccessWrap" class="hidden bg-white rounded-2xl p-8 border border-slate-100 shadow-sm text-center">
+            <span class="text-3xl">✅</span>
+            <h2 class="text-xl font-medium text-slate-900 mt-3 mb-2">Pengajuan Berhasil Dikirim!</h2>
+            <p class="text-sm text-slate-500 mb-4">Nomor struk Anda (langsung bisa dilacak):</p>
+            <div class="text-2xl font-bold text-sky-600 font-mono mb-4" id="reqIdDisplay"></div>
+            <p class="text-xs text-slate-500 mb-6">Kurir kami akan segera menghubungi Anda untuk penimbangan resmi. Simpan nomor struk di atas untuk melacak status cucian Anda kapan saja — tanpa perlu login.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="downloadReceiptPdf()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-6 py-3 rounded-xl cursor-pointer">⬇ Download Struk (PDF)</button>
+                <a href="tracking.html" class="inline-block bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-6 py-3 rounded-xl">Buka Halaman Pelacakan</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL NOTIFIKASI: muncul segera setelah struk terbit, sebelum halaman sukses ditampilkan -->
+    <div id="receiptNotifModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center px-6">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl">
+            <span class="text-3xl">🧾</span>
+            <h3 class="text-lg font-semibold text-slate-900 mt-3 mb-1">Struk Anda Sudah Terbit!</h3>
+            <p class="text-xs text-slate-500 mb-3">Nomor struk:</p>
+            <div class="text-xl font-bold text-sky-600 font-mono mb-4" id="notifReceiptId"></div>
+            <p class="text-sm text-slate-600 mb-6">Apakah Anda ingin mendownload struk ini dalam bentuk PDF sekarang?</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="handleNotifDownload()" class="w-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold py-3 rounded-xl cursor-pointer">Ya, Download PDF</button>
+                <button onclick="handleNotifDismiss()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium py-3 rounded-xl cursor-pointer">Nanti Saja</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/order.js"></script>
+</body>
+</html>

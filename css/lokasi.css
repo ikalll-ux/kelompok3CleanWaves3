@@ -1,0 +1,11 @@
+/* ==========================================================================
+   lokasi.css — halaman Lokasi Outlet
+   ========================================================================== */
+
+#lokasi .bg-white {
+    transition: border-color 0.15s ease;
+}
+
+#lokasi .bg-white:hover {
+    border-color: #bae6fd; /* sky-200 */
+}

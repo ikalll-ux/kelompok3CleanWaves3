@@ -1,0 +1,11 @@
+/* ==========================================================================
+   karir.css — halaman Karir
+   ========================================================================== */
+
+#karir .bg-white {
+    transition: border-color 0.15s ease;
+}
+
+#karir .bg-white:hover {
+    border-color: #bae6fd; /* sky-200 */
+}

@@ -1,0 +1,11 @@
+/* ==========================================================================
+   layanan-karpet.css — halaman detail Karpet, Gordyn & Sepatu
+   ========================================================================== */
+
+#layanan-karpet .bg-white {
+    transition: box-shadow 0.15s ease;
+}
+
+#layanan-karpet .bg-white:hover {
+    box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.1);
+}
